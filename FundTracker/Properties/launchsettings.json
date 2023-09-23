@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "FundTracker (Unpackaged)": {
+        "commandName": "Project"
+      },
+      "FundTracker (Package)": {
+        "commandName": "MsixPackage"
+      }
+    }
+}
