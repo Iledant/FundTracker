@@ -1,4 +1,5 @@
-﻿using FundTracker.ViewModels;
+﻿using FundTracker.Core.Models;
+using FundTracker.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
@@ -17,5 +18,18 @@ public sealed partial class PortfoliosPage : Page
     {
         ViewModel = App.GetService<PortfoliosViewModel>();
         InitializeComponent();
+    }
+
+    private void NavLinksList_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is PortfolioItem portfolio)
+        {
+            ViewModel.GetPortfolioContent(portfolio);
+        }
+    }
+
+    private void PortfolioAddBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+
     }
 }

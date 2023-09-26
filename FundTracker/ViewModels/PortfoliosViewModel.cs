@@ -10,25 +10,38 @@ namespace FundTracker.ViewModels;
 
 public partial class PortfoliosViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly ISampleDataService _sampleDataService;
+    private readonly IPortfoliosListService _portfoliosListService;
 
-    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<PortfolioItem> PortfoliosList { get; } = new ObservableCollection<PortfolioItem>();
 
-    public PortfoliosViewModel(ISampleDataService sampleDataService)
+    public ObservableCollection<PortfolioLine> PortfolioContent
     {
-        _sampleDataService = sampleDataService;
+        get;
+    } = new ObservableCollection<PortfolioLine>();
+
+    public PortfoliosViewModel(IPortfoliosListService portfoliosListService)
+    {
+        _portfoliosListService = portfoliosListService;
+    }
+
+    public void GetPortfolioContent(PortfolioItem portfolioItem)
+    {
+        PortfolioContent.Clear();
+        foreach (var  item in PortfolioContent)
+        {
+            PortfolioContent.Add(item);
+        }
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        Source.Clear();
+        PortfoliosList.Clear();
 
-        // TODO: Replace with real data.
-        var data = await _sampleDataService.GetGridDataAsync();
+        var data = await _portfoliosListService.GetPortfoliosListAsync();
 
         foreach (var item in data)
         {
-            Source.Add(item);
+            PortfoliosList.Add(item);
         }
     }
 
