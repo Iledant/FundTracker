@@ -4,10 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:FundTracker.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:FundTracker.Core.Models"
     mc:Ignorable="d">
     <Page.Resources>
+        <helpers:DoubleToPercentageConverter x:Key="PercentageConverter" />
         <DataTemplate x:Key="NavLinkItemTemplate" x:DataType="model:PortfolioItem">
             <StackPanel
                 Margin="2,0,0,0"
@@ -83,7 +85,13 @@
                     ItemsSource="{x:Bind ViewModel.PortfolioContent}">
                     <controls:DataGrid.Columns>
                         <controls:DataGridTextColumn Binding="{Binding Fund.Name}" Header="Nom" />
-                        <controls:DataGridTextColumn Binding="{Binding Evol}" Header="Evol" />
+                        <controls:DataGridTextColumn Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}" Header="Evol">
+                            <controls:DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Right" />
+                                </Style>
+                            </controls:DataGridTextColumn.ElementStyle>
+                        </controls:DataGridTextColumn>
                     </controls:DataGrid.Columns>
                 </controls:DataGrid>
             </Grid>

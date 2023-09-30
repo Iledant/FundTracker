@@ -27,7 +27,7 @@ public partial class PortfoliosViewModel : ObservableRecipient, INavigationAware
     public void GetPortfolioContent(PortfolioItem portfolioItem)
     {
         PortfolioContent.Clear();
-        foreach (var  item in PortfolioContent)
+        foreach (var  item in portfolioItem.Lines)
         {
             PortfolioContent.Add(item);
         }
