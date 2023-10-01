@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="FundTracker.ContentDialogs.AddPortfolioContentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:FundTracker.ContentDialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="using:FundTracker.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
+    Title="Ajouter un portetfeuille"
+    IsPrimaryButtonEnabled="False"
+    PrimaryButtonText="Créer"
+    SecondaryButtonText="Annuler"
+    mc:Ignorable="d">
+
+    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TextBox
+            Name="NameTextBox"
+            Header="Nom du portefeuille"
+            TextChanged="NameTextBox_TextChanged" />
+    </StackPanel>
+
+</ContentDialog>

@@ -53,7 +53,7 @@
                         IsItemClickEnabled="True"
                         ItemClick="NavLinksList_ItemClick"
                         ItemTemplate="{StaticResource NavLinkItemTemplate}"
-                        ItemsSource="{x:Bind ViewModel.PortfoliosList}"
+                        ItemsSource="{x:Bind ViewModel.PortfoliosList, Mode=OneWay}"
                         SelectionMode="Single" />
                     <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <AppBarButton
@@ -63,8 +63,9 @@
                             Label="Ajouter" />
                         <AppBarButton
                             x:Name="PortfolioDeleteBtn"
-                            Click="PortfolioAddBtn_Click"
+                            Click="PortfolioDeleteBtn_Click"
                             Icon="Delete"
+                            IsEnabled="False"
                             Label="Supprimer" />
                     </StackPanel>
                 </Grid>
@@ -84,8 +85,14 @@
                     AutoGenerateColumns="False"
                     ItemsSource="{x:Bind ViewModel.PortfolioContent}">
                     <controls:DataGrid.Columns>
-                        <controls:DataGridTextColumn Binding="{Binding Fund.Name}" Header="Nom" />
-                        <controls:DataGridTextColumn Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}" Header="Evol">
+                        <controls:DataGridTextColumn
+                            Binding="{Binding Fund.Name}"
+                            Header="Nom"
+                            IsReadOnly="True" />
+                        <controls:DataGridTextColumn
+                            Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}"
+                            Header="Evol"
+                            IsReadOnly="True">
                             <controls:DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="TextAlignment" Value="Right" />

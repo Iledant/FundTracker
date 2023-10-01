@@ -1,13 +1,14 @@
-﻿using FundTracker.Core.Contracts.Services;
+﻿using System.Collections.ObjectModel;
+using FundTracker.Core.Contracts.Services;
 using FundTracker.Core.Models;
 
 namespace FundTracker.Core.Services;
 public class PortfoliosListService : IPortfoliosListService
 {
-    private List<PortfolioItem> _allPortfolios;
-    private static IEnumerable<PortfolioItem> AllPortfolios()
+    private readonly ObservableCollection<PortfolioItem> _allPortfolios;
+    public PortfoliosListService()
     {
-        return new List<PortfolioItem>()
+        var list = new List<PortfolioItem>()
         {
             new PortfolioItem()
             {
@@ -74,12 +75,23 @@ public class PortfoliosListService : IPortfoliosListService
                 }
             }
         };
+        _allPortfolios = new ObservableCollection<PortfolioItem>(list);
     }
-    public async Task<IEnumerable<PortfolioItem>> GetPortfoliosListAsync()
-    {
-        _allPortfolios ??= new List<PortfolioItem>(AllPortfolios());
-        await Task.CompletedTask;
 
-        return _allPortfolios;
+    public void Add(string name)
+    {
+        var newItem = new PortfolioItem() { 
+            Name = name,
+            Id = 5,
+            Lines = new List<PortfolioLine>()
+        };
+        _allPortfolios.Add(newItem);
     }
+
+    public void Remove(PortfolioItem item)
+    {
+        _allPortfolios.Remove(item);
+    }
+
+    public ObservableCollection<PortfolioItem> PortfoliosList() => _allPortfolios;
 }

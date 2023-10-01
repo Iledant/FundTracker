@@ -12,7 +12,7 @@ public partial class PortfoliosViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IPortfoliosListService _portfoliosListService;
 
-    public ObservableCollection<PortfolioItem> PortfoliosList { get; } = new ObservableCollection<PortfolioItem>();
+    public ObservableCollection<PortfolioItem> PortfoliosList => _portfoliosListService.PortfoliosList();
 
     public ObservableCollection<PortfolioLine> PortfolioContent
     {
@@ -33,16 +33,18 @@ public partial class PortfoliosViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+    public void ClearPortfolioContent()
+    {
+        PortfolioContent.Clear();
+    }
+
+    public void AddPortfolio(string name)
+    {
+        _portfoliosListService.Add(name);
+    }
+
     public async void OnNavigatedTo(object parameter)
     {
-        PortfoliosList.Clear();
-
-        var data = await _portfoliosListService.GetPortfoliosListAsync();
-
-        foreach (var item in data)
-        {
-            PortfoliosList.Add(item);
-        }
     }
 
     public void OnNavigatedFrom()
