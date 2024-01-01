@@ -10,14 +10,13 @@ public class PortfoliosListService : IPortfoliosListService
     {
         var list = new List<PortfolioItem>()
         {
-            new PortfolioItem()
+            new()
             {
                 Id = 1,
                 Name = "Portefeuille 1",
                 Lines = new List<PortfolioLine>
                 {
-                    new PortfolioLine
-                    {
+                    new() {
                         AveragePurchasePrice = 5.5,
                         Quantity = 2,
                         Evol = 0.43,
@@ -30,14 +29,13 @@ public class PortfoliosListService : IPortfoliosListService
                     },
                 }
             },
-            new PortfolioItem()
+            new()
             {
                 Id= 2,
                 Name = "Portfeuille 2",
                 Lines = new List<PortfolioLine>
                 {
-                    new PortfolioLine
-                    {
+                    new() {
                         AveragePurchasePrice = 4.5,
                         Quantity = 3,
                         Evol = -0.13,
@@ -48,8 +46,7 @@ public class PortfoliosListService : IPortfoliosListService
                             MSId="FD2"
                         }
                     },
-                    new PortfolioLine
-                    {
+                    new() {
                         AveragePurchasePrice = 5.5,
                         Quantity = 1.5,
                         Evol = 0.2,
@@ -60,8 +57,7 @@ public class PortfoliosListService : IPortfoliosListService
                             MSId="FD3"
                         }
                     },
-                    new PortfolioLine
-                    {
+                    new() {
                         AveragePurchasePrice = 8.5,
                         Quantity = 0.5,
                         Evol = -0.05,

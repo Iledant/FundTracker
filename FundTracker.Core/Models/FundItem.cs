@@ -20,4 +20,9 @@ public class FundItem
     {
         get; set;
     }
+
+    public List<DateValue> DateValues
+    {
+        get; set;
+    }  
 }

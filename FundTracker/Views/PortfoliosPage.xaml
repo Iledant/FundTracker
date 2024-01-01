@@ -7,6 +7,8 @@
     xmlns:helpers="using:FundTracker.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:FundTracker.Core.Models"
+    xmlns:viewmodels="using:FundTracker.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:PortfoliosViewModel}"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:DoubleToPercentageConverter x:Key="PercentageConverter" />
@@ -76,9 +78,9 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBlock
-                    Margin="12,12,0,0"
+                    Margin="12,12,0,12"
                     Style="{StaticResource BaseTextBlockStyle}"
-                    Text="LIGNES DU PORTEFEUILLE" />
+                    Text="Lignes" />
                 <controls:DataGrid
                     x:Name="dataGrid"
                     Grid.Row="2"
