@@ -13,35 +13,26 @@
 
     <Page.Resources>
         <helpers:DoubleToPercentageConverter x:Key="PercentageConverter" />
-        <DataTemplate x:Key="NavLinkItemTemplate" x:DataType="model:PortfolioItem">
-            <StackPanel
-                Margin="2,0,0,0"
-                AutomationProperties.Name="{x:Bind Name}"
-                Orientation="Horizontal">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe82d;" />
-                <TextBlock
-                    Margin="24,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind Name}" />
-            </StackPanel>
-        </DataTemplate>
     </Page.Resources>
 
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock
             Margin="12,12,0,12"
             Style="{StaticResource BaseTextBlockStyle}"
             Text="Lignes" />
         <controls:DataGrid
-            x:Name="dataGrid"
-            Grid.Row="2"
+            x:Name="DataGrid"
+            Grid.Row="1"
             AutoGenerateColumns="False"
-            ItemsSource="{x:Bind ViewModel.Lines}">
+            ItemsSource="{x:Bind ViewModel.Lines}"
+            SelectionChanged="DataGrid_SelectionChanged"
+            SelectionMode="Single">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn
                     Binding="{Binding Fund.Name}"
@@ -59,6 +50,17 @@
                 </controls:DataGridTextColumn>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <AppBarButton
+                Click="AddFundButton_Click"
+                Icon="Add"
+                Label="Ajouter" />
+            <AppBarButton
+                Click="DeleteFundButton_Click"
+                Icon="Delete"
+                IsEnabled="{x:Bind ViewModel.IsFundSelected, Mode=OneWay}"
+                Label="Supprimer" />
+        </StackPanel>
     </Grid>
 
 </Page>

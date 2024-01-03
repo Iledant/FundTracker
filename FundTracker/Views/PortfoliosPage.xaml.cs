@@ -3,6 +3,7 @@ using FundTracker.Core.Models;
 using FundTracker.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 
 namespace FundTracker.Views;
 
@@ -60,7 +61,11 @@ public sealed partial class PortfoliosPage : Page
         {
             Header = item.Name,
             Tag = item,
-            IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Document }
+            IconSource = new Microsoft.UI.Xaml.Controls.FontIconSource()
+            {
+                FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                Glyph = "\xE82d"
+            },
         };
 
         Frame frame = new();

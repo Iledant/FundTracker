@@ -21,4 +21,19 @@ public sealed partial class FundsView : Page
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e) => ViewModel.OnNavigatedTo(e.Parameter);
+
+    private void AddFundButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+
+    }
+
+    private void DeleteFundButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+
+    }
+
+    private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ViewModel.Selected = (Core.Models.PortfolioLine?)DataGrid.SelectedItem;
+    }
 }
