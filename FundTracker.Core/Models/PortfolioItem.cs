@@ -1,4 +1,6 @@
-﻿namespace FundTracker.Core.Models;
+﻿using System.Collections.ObjectModel;
+
+namespace FundTracker.Core.Models;
 public class PortfolioItem
 {
     public long Id
@@ -11,7 +13,7 @@ public class PortfolioItem
         get; set;
     }
 
-    public List<PortfolioLine> Lines
+    public ObservableCollection<PortfolioLine> Lines
     {
         get; set;
     }

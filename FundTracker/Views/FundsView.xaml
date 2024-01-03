@@ -1,0 +1,64 @@
+<Page
+    x:Class="FundTracker.Views.FundsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:FundTracker.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:FundTracker.Core.Models"
+    xmlns:viewmodels="using:FundTracker.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:FundsViewModel}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <helpers:DoubleToPercentageConverter x:Key="PercentageConverter" />
+        <DataTemplate x:Key="NavLinkItemTemplate" x:DataType="model:PortfolioItem">
+            <StackPanel
+                Margin="2,0,0,0"
+                AutomationProperties.Name="{x:Bind Name}"
+                Orientation="Horizontal">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe82d;" />
+                <TextBlock
+                    Margin="24,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Name}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Margin="12,12,0,12"
+            Style="{StaticResource BaseTextBlockStyle}"
+            Text="Lignes" />
+        <controls:DataGrid
+            x:Name="dataGrid"
+            Grid.Row="2"
+            AutoGenerateColumns="False"
+            ItemsSource="{x:Bind ViewModel.Lines}">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn
+                    Binding="{Binding Fund.Name}"
+                    Header="Nom"
+                    IsReadOnly="True" />
+                <controls:DataGridTextColumn
+                    Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}"
+                    Header="Evol"
+                    IsReadOnly="True">
+                    <controls:DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Right" />
+                        </Style>
+                    </controls:DataGridTextColumn.ElementStyle>
+                </controls:DataGridTextColumn>
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+    </Grid>
+
+</Page>

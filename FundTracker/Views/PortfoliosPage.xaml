@@ -10,100 +10,11 @@
     xmlns:viewmodels="using:FundTracker.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:PortfoliosViewModel}"
     mc:Ignorable="d">
-    <Page.Resources>
-        <helpers:DoubleToPercentageConverter x:Key="PercentageConverter" />
-        <DataTemplate x:Key="NavLinkItemTemplate" x:DataType="model:PortfolioItem">
-            <StackPanel
-                Margin="2,0,0,0"
-                AutomationProperties.Name="{x:Bind Name}"
-                Orientation="Horizontal">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe82d;" />
-                <TextBlock
-                    Margin="24,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind Name}" />
-            </StackPanel>
-        </DataTemplate>
-    </Page.Resources>
-
 
     <Grid x:Name="ContentArea">
-        <SplitView
-            x:Name="splitView"
-            CompactPaneLength="48"
-            DisplayMode="Inline"
-            IsPaneOpen="True"
-            OpenPaneLength="256"
-            PaneBackground="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
-            <SplitView.Pane>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock
-                        x:Name="PaneHeader"
-                        Margin="60,12,0,0"
-                        Style="{StaticResource BaseTextBlockStyle}"
-                        Text="PORTEFEUILLES" />
-                    <ListView
-                        x:Name="NavLinksList"
-                        Grid.Row="1"
-                        Margin="0,12,0,0"
-                        VerticalAlignment="Stretch"
-                        IsItemClickEnabled="True"
-                        ItemClick="NavLinksList_ItemClick"
-                        ItemTemplate="{StaticResource NavLinkItemTemplate}"
-                        ItemsSource="{x:Bind ViewModel.PortfoliosList, Mode=OneWay}"
-                        SelectionMode="Single" />
-                    <StackPanel Grid.Row="2" Orientation="Horizontal">
-                        <AppBarButton
-                            x:Name="PortfolioAddBtn"
-                            Click="PortfolioAddBtn_Click"
-                            Icon="Add"
-                            Label="Ajouter" />
-                        <AppBarButton
-                            x:Name="PortfolioDeleteBtn"
-                            Click="PortfolioDeleteBtn_Click"
-                            Icon="Delete"
-                            IsEnabled="False"
-                            Label="Supprimer" />
-                    </StackPanel>
-                </Grid>
-            </SplitView.Pane>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    Margin="12,12,0,12"
-                    Style="{StaticResource BaseTextBlockStyle}"
-                    Text="Lignes" />
-                <controls:DataGrid
-                    x:Name="dataGrid"
-                    Grid.Row="2"
-                    AutoGenerateColumns="False"
-                    ItemsSource="{x:Bind ViewModel.PortfolioContent}">
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTextColumn
-                            Binding="{Binding Fund.Name}"
-                            Header="Nom"
-                            IsReadOnly="True" />
-                        <controls:DataGridTextColumn
-                            Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}"
-                            Header="Evol"
-                            IsReadOnly="True">
-                            <controls:DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextAlignment" Value="Right" />
-                                </Style>
-                            </controls:DataGridTextColumn.ElementStyle>
-                        </controls:DataGridTextColumn>
-                    </controls:DataGrid.Columns>
-                </controls:DataGrid>
-            </Grid>
-        </SplitView>
+        <TabView
+            AddTabButtonClick="TabView_AddTabButtonClick"
+            Loaded="TabView_Loaded"
+            TabCloseRequested="TabView_TabCloseRequested" />
     </Grid>
 </Page>

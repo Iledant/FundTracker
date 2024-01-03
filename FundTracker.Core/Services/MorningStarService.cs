@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FundTracker.Core.Contracts.Services;
 using FundTracker.Core.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FundTracker.Core.Services;
 public class MorningStarService : IMorningStarService
@@ -15,6 +16,12 @@ public class MorningStarService : IMorningStarService
     private static readonly NumberFormatInfo numberFormatInfo = usCulture.NumberFormat;
     private static readonly string[] filteredCategories = { "PEA", "Fonds", "Actions", "ETFs" };
     private static readonly string searchUrl = "https://www.morningstar.fr/fr/util/SecuritySearch.ashx?source=nav&moduleId=6&ifIncludeAds=False&usrtType=v";
+    private readonly ILogger _logger;
+
+    public MorningStarService(ILogger logger)
+    {
+        _logger = logger;
+    }
 
     private static List<MorningStarFund> ParseMorningstarResponse(string content)
     {
@@ -87,6 +94,7 @@ public class MorningStarService : IMorningStarService
             $"startDate={beginPattern}&endDate={endPattern}&outputType=COMPACTJSON";
         List<DateValue> values = new();
         char[] leadingCharToTrim = { ',', '[' };
+
         try
         {
             var response = await httpClient.GetAsync(url);
@@ -99,18 +107,26 @@ public class MorningStarService : IMorningStarService
                 var dateAndValue = dateValues[i].Trim(leadingCharToTrim).Split(',');
 
                 if (dateAndValue.Length != 2)
+                {
                     throw new Exception("Erreur de format de réponse");
+                }
+
                 if (!double.TryParse(dateAndValue[1], NumberStyles.Number, usCulture, out var value))
+                {
                     throw new Exception("Erreur de format de réponse");
+                }
+
                 if (!long.TryParse(dateAndValue[0], out var dateInMilliseconds))
+                {
                     throw new Exception("Erreur de format de réponse");
+                }
 
                 values.Add(new DateValue(value, new DateTime(1970, 1, 1).AddMilliseconds(dateInMilliseconds)));
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            // TODO implémenter un log d'erreur
+            _logger.LogError("FetchHistorical Exception" + e.Message);
         }
         return values;
     }

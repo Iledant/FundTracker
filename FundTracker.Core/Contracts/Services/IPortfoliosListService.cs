@@ -7,6 +7,6 @@ public interface IPortfoliosListService
 {
     ObservableCollection<PortfolioItem> PortfoliosList();
 
-    void Add(string name);
+    PortfolioItem Add(string name);
     void Remove(PortfolioItem item);
 }

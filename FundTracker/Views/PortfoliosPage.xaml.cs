@@ -19,40 +19,54 @@ public sealed partial class PortfoliosPage : Page
         InitializeComponent();
     }
 
-    private void NavLinksList_ItemClick(object sender, ItemClickEventArgs e)
+    private async void TabView_AddTabButtonClick(TabView sender, object args)
     {
-        if (e.ClickedItem is PortfolioItem portfolio)
+        var addContentDialog = new AddPortfolioContentDialog
         {
-            ViewModel.GetPortfolioContent(portfolio);
-            PortfolioDeleteBtn.IsEnabled = true;
-        }
-        else
-        {
-            ViewModel.ClearPortfolioContent();
-            PortfolioDeleteBtn.IsEnabled = false;
-        }
-    }
-
-    private async void PortfolioAddBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        AddPortfolioContentDialog addContentDialog = new AddPortfolioContentDialog();
-        addContentDialog.XamlRoot = this.Content.XamlRoot;
+            XamlRoot = Content.XamlRoot
+        };
 
         var result = await addContentDialog.ShowAsync(ContentDialogPlacement.Popup);
 
         if (result == ContentDialogResult.Primary)
         {
-            ViewModel.AddPortfolio(addContentDialog.PortfolioName);
+            var newItem = ViewModel.AddPortfolio(addContentDialog.PortfolioName);
+            sender.TabItems.Add(CreateNewTab(newItem));
         }
     }
 
-    private void PortfolioDeleteBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
     {
-        if (NavLinksList.SelectedItem is PortfolioItem item)
+        var deletedTab = args.Tab;
+        var item = deletedTab.Tag as PortfolioItem;
+        if (item is not null)
         {
             ViewModel.PortfoliosList.Remove(item);
-            ViewModel.PortfolioContent.Clear();
-            PortfolioDeleteBtn.IsEnabled = false;
         }
+        sender.TabItems.Remove(deletedTab);
+    }
+
+    private void TabView_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        foreach (var  item in ViewModel.PortfoliosList)
+        {
+            (sender as TabView)?.TabItems.Add(CreateNewTab(item));
+        }   
+    }
+
+    private TabViewItem CreateNewTab(PortfolioItem item)
+    {
+        TabViewItem newItem = new()
+        {
+            Header = item.Name,
+            Tag = item,
+            IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Document }
+        };
+
+        Frame frame = new();
+        frame.Navigate(typeof(FundsView),item);
+        newItem.Content = frame;
+
+        return newItem;
     }
 }

@@ -11,6 +11,7 @@ using FundTracker.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 
 namespace FundTracker;
@@ -55,6 +56,8 @@ public partial class App : Application
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
+            services.AddLogging(context => context.AddDebug());
+
             // Other Activation Handlers
             services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
 
@@ -77,6 +80,7 @@ public partial class App : Application
             services.AddTransient<SettingsPage>();
             services.AddTransient<PortfoliosViewModel>();
             services.AddTransient<PortfoliosPage>();
+            services.AddTransient<FundsViewModel>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
 
@@ -92,8 +96,8 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        // TODO: Log and handle exceptions as appropriate.
-        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+        var logger = Host.Services.GetService<ILogger>();
+        logger?.LogError($"Exception d'application non gérée : {e.Exception},{e.Message}");
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

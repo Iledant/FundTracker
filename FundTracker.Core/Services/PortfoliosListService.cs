@@ -14,7 +14,7 @@ public class PortfoliosListService : IPortfoliosListService
             {
                 Id = 1,
                 Name = "Portefeuille 1",
-                Lines = new List<PortfolioLine>
+                Lines = new ObservableCollection<PortfolioLine>
                 {
                     new() {
                         AveragePurchasePrice = 5.5,
@@ -33,7 +33,7 @@ public class PortfoliosListService : IPortfoliosListService
             {
                 Id= 2,
                 Name = "Portfeuille 2",
-                Lines = new List<PortfolioLine>
+                Lines = new ObservableCollection<PortfolioLine>
                 {
                     new() {
                         AveragePurchasePrice = 4.5,
@@ -74,14 +74,15 @@ public class PortfoliosListService : IPortfoliosListService
         _allPortfolios = new ObservableCollection<PortfolioItem>(list);
     }
 
-    public void Add(string name)
+    public PortfolioItem Add(string name)
     {
         var newItem = new PortfolioItem() { 
             Name = name,
             Id = 5,
-            Lines = new List<PortfolioLine>()
+            Lines = new ObservableCollection<PortfolioLine>()
         };
         _allPortfolios.Add(newItem);
+        return newItem;
     }
 
     public void Remove(PortfolioItem item)

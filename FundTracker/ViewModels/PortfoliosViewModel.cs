@@ -8,16 +8,15 @@ using FundTracker.Core.Models;
 
 namespace FundTracker.ViewModels;
 
-public partial class PortfoliosViewModel : ObservableRecipient, INavigationAware
+public partial class PortfoliosViewModel : ObservableRecipient
 {
     private readonly IPortfoliosListService _portfoliosListService;
 
     public ObservableCollection<PortfolioItem> PortfoliosList => _portfoliosListService.PortfoliosList();
 
-    public ObservableCollection<PortfolioLine> PortfolioContent
-    {
-        get;
-    } = new ObservableCollection<PortfolioLine>();
+    private ObservableCollection<PortfolioLine> _portfolioContent = new();
+
+    public ObservableCollection<PortfolioLine> PortfolioContent => _portfolioContent;
 
     public PortfoliosViewModel(IPortfoliosListService portfoliosListService)
     {
@@ -26,11 +25,7 @@ public partial class PortfoliosViewModel : ObservableRecipient, INavigationAware
 
     public void GetPortfolioContent(PortfolioItem portfolioItem)
     {
-        PortfolioContent.Clear();
-        foreach (var  item in portfolioItem.Lines)
-        {
-            PortfolioContent.Add(item);
-        }
+        _portfolioContent = portfolioItem.Lines;
     }
 
     public void ClearPortfolioContent()
@@ -38,16 +33,5 @@ public partial class PortfoliosViewModel : ObservableRecipient, INavigationAware
         PortfolioContent.Clear();
     }
 
-    public void AddPortfolio(string name)
-    {
-        _portfoliosListService.Add(name);
-    }
-
-    public async void OnNavigatedTo(object parameter)
-    {
-    }
-
-    public void OnNavigatedFrom()
-    {
-    }
+    public PortfolioItem AddPortfolio(string name) => _portfoliosListService.Add(name);
 }
