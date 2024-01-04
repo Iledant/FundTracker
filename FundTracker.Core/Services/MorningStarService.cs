@@ -16,9 +16,9 @@ public class MorningStarService : IMorningStarService
     private static readonly NumberFormatInfo numberFormatInfo = usCulture.NumberFormat;
     private static readonly string[] filteredCategories = { "PEA", "Fonds", "Actions", "ETFs" };
     private static readonly string searchUrl = "https://www.morningstar.fr/fr/util/SecuritySearch.ashx?source=nav&moduleId=6&ifIncludeAds=False&usrtType=v";
-    private readonly ILogger _logger;
+    private readonly ILogger<MorningStarService> _logger;
 
-    public MorningStarService(ILogger logger)
+    public MorningStarService(ILogger<MorningStarService> logger)
     {
         _logger = logger;
     }
@@ -126,7 +126,7 @@ public class MorningStarService : IMorningStarService
         }
         catch (Exception e)
         {
-            _logger.LogError("FetchHistorical Exception" + e.Message);
+//            _logger.LogError("FetchHistorical Exception" + e.Message);
         }
         return values;
     }

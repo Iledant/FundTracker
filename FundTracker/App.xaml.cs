@@ -53,10 +53,9 @@ public partial class App : Application
         UseContentRoot(AppContext.BaseDirectory).
         ConfigureServices((context, services) =>
         {
+            services.AddLogging(builder => builder.AddDebug());
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
-
-            services.AddLogging(context => context.AddDebug());
 
             // Other Activation Handlers
             services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
@@ -73,6 +72,7 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IPortfoliosListService, PortfoliosListService>();
+            services.AddSingleton<IMorningStarService, MorningStarService>();
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
