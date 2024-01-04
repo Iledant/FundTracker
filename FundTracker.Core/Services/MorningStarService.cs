@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using FundTracker.Core.Contracts.Services;
 using FundTracker.Core.Models;
 using Microsoft.Extensions.Logging;
@@ -13,7 +8,6 @@ public class MorningStarService : IMorningStarService
 {
     private static readonly HttpClient httpClient = new();
     private static readonly CultureInfo usCulture = new("en-US");
-    private static readonly NumberFormatInfo numberFormatInfo = usCulture.NumberFormat;
     private static readonly string[] filteredCategories = { "PEA", "Fonds", "Actions", "ETFs" };
     private static readonly string searchUrl = "https://www.morningstar.fr/fr/util/SecuritySearch.ashx?source=nav&moduleId=6&ifIncludeAds=False&usrtType=v";
     private readonly ILogger<MorningStarService> _logger;
@@ -74,8 +68,7 @@ public class MorningStarService : IMorningStarService
 
         try
         {
-
-            HttpResponseMessage response = await httpClient.PostAsync(searchUrl, formContent);
+            var response = await httpClient.PostAsync(searchUrl, formContent);
             var responseAsString = await response.Content.ReadAsStringAsync();
             return ParseMorningstarResponse(responseAsString);
         }
@@ -126,7 +119,7 @@ public class MorningStarService : IMorningStarService
         }
         catch (Exception e)
         {
-//            _logger.LogError("FetchHistorical Exception" + e.Message);
+            _logger.LogError("Exception dans FetchHistorical provoquée par {Source} avec le message {Message} ", e.Source, e.Message);
         }
         return values;
     }
