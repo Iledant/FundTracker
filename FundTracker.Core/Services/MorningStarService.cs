@@ -114,13 +114,14 @@ public class MorningStarService : IMorningStarService
                     throw new Exception("Erreur de format de réponse");
                 }
 
-                values.Add(new DateValue(value, new DateTime(1970, 1, 1).AddMilliseconds(dateInMilliseconds)));
+                values.Add(new DateValue { Value = value, Date = new DateTime(1970, 1, 1).AddMilliseconds(dateInMilliseconds) });
             }
         }
         catch (Exception e)
         {
             _logger.LogError("Exception dans FetchHistorical provoquée par {Source} avec le message {Message} ", e.Source, e.Message);
         }
+        values.Sort((v1,v2) => DateTime.Compare(v1.Date,v2.Date));
         return values;
     }
 }

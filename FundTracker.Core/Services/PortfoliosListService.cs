@@ -12,17 +12,14 @@ public class PortfoliosListService : IPortfoliosListService
         {
             new()
             {
-                Id = 1,
                 Name = "Portefeuille 1",
                 Lines = new ObservableCollection<PortfolioLine>
                 {
                     new() {
                         AveragePurchasePrice = 5.5,
                         Quantity = 2,
-                        Evol = 0.43,
                         Fund = new FundItem
                         {
-                            Id =1,
                             Name="Fond 1",
                             MSId="FD1"
                         }
@@ -31,17 +28,14 @@ public class PortfoliosListService : IPortfoliosListService
             },
             new()
             {
-                Id= 2,
                 Name = "Portfeuille 2",
                 Lines = new ObservableCollection<PortfolioLine>
                 {
                     new() {
                         AveragePurchasePrice = 4.5,
                         Quantity = 3,
-                        Evol = -0.13,
                         Fund = new FundItem
                         {
-                            Id =2,
                             Name="Fond 2",
                             MSId="FD2"
                         }
@@ -49,10 +43,8 @@ public class PortfoliosListService : IPortfoliosListService
                     new() {
                         AveragePurchasePrice = 5.5,
                         Quantity = 1.5,
-                        Evol = 0.2,
                         Fund = new FundItem
                         {
-                            Id =3,
                             Name="Fond 3",
                             MSId="FD3"
                         }
@@ -60,10 +52,8 @@ public class PortfoliosListService : IPortfoliosListService
                     new() {
                         AveragePurchasePrice = 8.5,
                         Quantity = 0.5,
-                        Evol = -0.05,
                         Fund = new FundItem
                         {
-                            Id =4,
                             Name="Fond 4",
                             MSId="FD4"
                         }
@@ -78,7 +68,6 @@ public class PortfoliosListService : IPortfoliosListService
     {
         var newItem = new PortfolioItem() { 
             Name = name,
-            Id = 5,
             Lines = new ObservableCollection<PortfolioLine>()
         };
         _allPortfolios.Add(newItem);

@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#nullable enable
+
+using System.Text.Json.Serialization;
 
 namespace FundTracker.Core.Models;
 public class FundItem
 {
-    public int Id
-    {
-        get; set;
-    }
-    public string Name
-    {
-        get; set;
-    }
-    public string MSId
+    [JsonPropertyName("Name")]
+    public string? Name
     {
         get; set;
     }
 
-    public List<DateValue> DateValues
+    [JsonPropertyName("MSId")]
+    public string? MSId
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("DateValue")]
+    public List<DateValue>? DateValues
     {
         get; set;
     }  

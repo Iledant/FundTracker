@@ -4,6 +4,8 @@ using FundTracker.Core.Contracts.Services;
 using FundTracker.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
+using Microsoft.UI.Xaml;
+using System.Runtime.CompilerServices;
 namespace FundTracker.Views;
 /// <summary>
 /// Le contenu du dialogue permettant de rechercher un fond dans la base Morningstar et de renvoyer les informations
@@ -14,11 +16,20 @@ public sealed partial class FundAddDialog : Page
 
     private MorningStarFund? _selectedFund = null;
 
-    public delegate void SelectionChangedDelegate(bool isSelected);
+    private double _quantity = 0.0;
 
-    public SelectionChangedDelegate? SelectionChangedCallback = null;
+    private double _averagePurchasePrice = 0.0;
+
+    public delegate void OnChangedDelegate(bool isValid);
+
+    public OnChangedDelegate? OnChanged = null;
+
+    public double Quantity => _quantity;
+
+    public double AveragePurchasePrice => _averagePurchasePrice;
 
     public MorningStarFund? SelectedFund => _selectedFund;
+
     public FundAddDialog()
     {
         InitializeComponent();
@@ -45,6 +56,24 @@ public sealed partial class FundAddDialog : Page
     private void ResultsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         _selectedFund = ResultsListView.SelectedItem as MorningStarFund;
-        SelectionChangedCallback?.Invoke(_selectedFund is not null);
+        RaiseOnChanged();
+    }
+
+    private void QuantityTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        Double.TryParse(QuantityTextBox.Text, out _quantity);
+        RaiseOnChanged();
+    }
+
+    private void APPTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        Double.TryParse(APPTextBox.Text, out _averagePurchasePrice);
+        RaiseOnChanged();
+    }
+
+    private void RaiseOnChanged()
+    {
+        var isValid = _selectedFund is not null && _quantity > 0 && _averagePurchasePrice > 0;
+        OnChanged?.Invoke(isValid);
     }
 }

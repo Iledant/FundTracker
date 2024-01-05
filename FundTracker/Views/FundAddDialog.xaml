@@ -12,6 +12,14 @@
 
     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TextBox
+            x:Name="QuantityTextBox"
+            Header="Quantité"
+            TextChanged="QuantityTextBox_TextChanged" />
+        <TextBox
+            x:Name="APPTextBox"
+            Header="Prix moyen d'achat"
+            TextChanged="APPTextBox_TextChanged" />
+        <TextBox
             x:Name="SearchTextBox"
             Header="Recherche"
             TextChanged="SearchTextBox_TextChanged" />

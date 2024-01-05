@@ -38,7 +38,7 @@ public sealed partial class FundsView : Page
             IsPrimaryButtonEnabled = false
         };
 
-        content.SelectionChangedCallback = (bool b) => dialog.IsPrimaryButtonEnabled = b;
+        content.OnChanged = (bool b) => dialog.IsPrimaryButtonEnabled = b;
         var result = await dialog.ShowAsync();
 
         if (result == ContentDialogResult.Primary)
