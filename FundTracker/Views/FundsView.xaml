@@ -50,7 +50,10 @@
                 </controls:DataGridTextColumn>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <StackPanel
+            x:Name="AppBarStackPanel"
+            Grid.Row="2"
+            Orientation="Horizontal">
             <AppBarButton
                 Click="AddFundButton_Click"
                 Icon="Add"
@@ -60,6 +63,16 @@
                 Icon="Delete"
                 IsEnabled="{x:Bind ViewModel.IsFundSelected, Mode=OneWay}"
                 Label="Supprimer" />
+        </StackPanel>
+        <StackPanel
+            x:Name="ProgressStackPanel"
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical"
+            Visibility="Collapsed">
+            <TextBlock Text="Récupération de l'historique" />
+            <ProgressRing IsIndeterminate="True" />
         </StackPanel>
     </Grid>
 

@@ -1,3 +1,4 @@
+using FundTracker.Core.Contracts.Services;
 using FundTracker.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -44,12 +45,28 @@ public sealed partial class FundsView : Page
         if (result == ContentDialogResult.Primary)
         {
             var fund = content.SelectedFund;
+            if (fund is null)
+            {
+                return;
+            }
+            var morningstarService = App.GetService<IMorningStarService>();
+            ToggleProgressVisibility(true);
+            var dateValues = await morningstarService.FetchHistorical(fund.MorningStarID);
+            ToggleProgressVisibility(false);
+
         }
     }
 
     private void DeleteFundButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         
+    }
+
+    private void ToggleProgressVisibility(bool isProgressVisible)
+    {
+        ProgressStackPanel.Visibility = isProgressVisible ? Visibility.Visible : Visibility.Collapsed;
+        DataGrid.Visibility = isProgressVisible ? Visibility.Collapsed : Visibility.Visible;
+        AppBarStackPanel.Visibility = isProgressVisible ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
