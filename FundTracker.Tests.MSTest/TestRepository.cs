@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using FundTracker.Core.Contracts.Services;
+using FundTracker.Core.Models;
 using FundTracker.Core.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -15,13 +16,16 @@ public class TestRepository
     private static readonly Mock<IMorningStarService> mockMSService = new();
     private static readonly IMorningStarService morningstarService = mockMSService.Object;
     private static readonly string portfolioTestName1 = "Portefeuille 1";
+    private static readonly string portfolioTestName2 = "Portefeuille 2";
     private static readonly string msIdTestName1 = "MSID 1";
     private static readonly string FundTestName1 = "Fond 1";
     private static readonly double FundTestQuantity1 = 3.5;
+    private static readonly double FundTestQuantity2 = 4.0;
     private static readonly double FundTestAPP1 = 15.7;
-    private static readonly string jsonTest = """{"Portfolio":[{"Name":"Portefeuille 1","Line":[{"MSId":"MSID 1","APP":15.7,"Quantity":3.5}]}],"Fund":[{"Name":"Fond 1","MSId":"MSID 1","DateValue":[]}],"FileVersion":"1.0"}""";
+    private static readonly double FundTestAPP2 = 23.8;
+    private static readonly string jsonTest = """{"Portfolio":[{"Name":"Portefeuille 1","Line":[{"MSId":"MSID 1","APP":15.7,"Quantity":3.5}]}],"Fund":[{"Name":"Fond 1","MSId":"MSID 1","DateValue":[{"Value":12.3,"Date":"2023-12-01T00:00:00"}]}],"FileVersion":"1.0"}""";
 
-    private RepositoryService CreateRepositoryService() => new(logger, morningstarService);
+    private static RepositoryService CreateRepositoryService() => new(logger, morningstarService);
 
     private RepositoryService CreateRepositoryServiceWithOnePorfolio()
     {
@@ -32,11 +36,20 @@ public class TestRepository
 
     private RepositoryService CreateRepositoryServiceWithOneFund()
     {
+        mockMSService.Setup(foo => foo.FetchHistorical(msIdTestName1,null,null).Result).Returns(new List<DateValue>() { new() { Date= new DateTime(2023,12,1), Value=12.3 } });
         var repositoryService = CreateRepositoryServiceWithOnePorfolio();
         var firstPortfolio = repositoryService.Portfolios().First();
         repositoryService.AddToPortfolio(firstPortfolio, msIdTestName1, FundTestName1, FundTestQuantity1, FundTestAPP1);
         var firstFund = repositoryService.Funds().First();
-        firstFund.DateValues = new();
+        return repositoryService;
+    }
+
+    private RepositoryService CreateRepositoryServiceWith2PortfolioAnd1Fund()
+    {
+        var repositoryService = CreateRepositoryServiceWithOneFund();
+        repositoryService.AddPortfolio(portfolioTestName2);
+        var secondPortfolio = repositoryService.Portfolios().Last();
+        repositoryService.AddToPortfolio(secondPortfolio, msIdTestName1, FundTestName1, FundTestQuantity2, FundTestAPP2);
         return repositoryService;
     }
 
@@ -129,5 +142,20 @@ public class TestRepository
 
         Assert.AreEqual(1,repositoryService.Portfolios().Count);
         Assert.AreEqual(1, repositoryService.Funds().Count);
+    }
+
+    [TestMethod]
+    public void TestCommonFund()
+    {
+        var repositoryService = CreateRepositoryServiceWith2PortfolioAnd1Fund();
+
+        Assert.AreEqual(1, repositoryService.Funds().Count());
+
+        var lastPortfolio = repositoryService.Portfolios().Last();
+
+        repositoryService.RemovePortfolio(lastPortfolio);
+
+        Assert.AreEqual(1, repositoryService.Portfolios().Count());
+        Assert.AreEqual(1, repositoryService.Funds().Count());
     }
 }
