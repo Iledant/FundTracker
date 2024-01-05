@@ -42,7 +42,9 @@ public class RepositoryService : IRepositoryService
             _funds.Add(insertedFund);
         }
 
-        portfolio.Lines.Add(new PortfolioLine { AveragePurchasePrice = averagePurchasePrice, Fund = insertedFund, Quantity = quantity });
+        var line = new PortfolioLine { AveragePurchasePrice = averagePurchasePrice, Fund = insertedFund, Quantity = quantity };
+        line.SetEvol();
+        portfolio.Lines.Add(line);
     }
 
     public void RemoveLineFromPortfolio(PortfolioItem item, PortfolioLine line)

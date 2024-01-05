@@ -23,6 +23,8 @@ public class TestRepository
     private static readonly double FundTestQuantity2 = 4.0;
     private static readonly double FundTestAPP1 = 15.7;
     private static readonly double FundTestAPP2 = 23.8;
+    private static readonly DateTime DateTest1 = new (2023, 12, 1);
+    private static readonly double ValueTest1 = 12.3;
     private static readonly string jsonTest = """{"Portfolio":[{"Name":"Portefeuille 1","Line":[{"MSId":"MSID 1","APP":15.7,"Quantity":3.5}]}],"Fund":[{"Name":"Fond 1","MSId":"MSID 1","DateValue":[{"Value":12.3,"Date":"2023-12-01T00:00:00"}]}],"FileVersion":"1.0"}""";
 
     private static RepositoryService CreateRepositoryService() => new(logger, morningstarService);
@@ -36,7 +38,7 @@ public class TestRepository
 
     private RepositoryService CreateRepositoryServiceWithOneFund()
     {
-        mockMSService.Setup(foo => foo.FetchHistorical(msIdTestName1,null,null).Result).Returns(new List<DateValue>() { new() { Date= new DateTime(2023,12,1), Value=12.3 } });
+        mockMSService.Setup(foo => foo.FetchHistorical(msIdTestName1,null,null).Result).Returns(new List<DateValue>() { new() { Date= DateTest1, Value=ValueTest1 } });
         var repositoryService = CreateRepositoryServiceWithOnePorfolio();
         var firstPortfolio = repositoryService.Portfolios().First();
         repositoryService.AddToPortfolio(firstPortfolio, msIdTestName1, FundTestName1, FundTestQuantity1, FundTestAPP1);
@@ -80,6 +82,8 @@ public class TestRepository
         var firstLine = repositoryService.Portfolios().First().Lines.First();
         Assert.AreEqual(FundTestQuantity1, firstLine.Quantity);
         Assert.AreEqual(FundTestAPP1, firstLine.AveragePurchasePrice);
+        var evol = (ValueTest1 - firstLine.AveragePurchasePrice)/firstLine.AveragePurchasePrice - 1;
+        Assert.AreEqual(evol, firstLine.Evol);
     }
 
     [TestMethod]
