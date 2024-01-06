@@ -13,10 +13,7 @@ namespace FundTracker.Views;
 /// </summary>
 public sealed partial class FundsView : Page
 {
-    public FundsViewModel ViewModel
-    {
-        get;
-    }
+    private readonly FundsViewModel ViewModel;
 
     public FundsView()
     {
