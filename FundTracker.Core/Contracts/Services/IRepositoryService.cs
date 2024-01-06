@@ -25,7 +25,7 @@ public interface IRepositoryService
     /// Ajouter un nouveau portefeuille au repository. Il n'y a pas de vérification de l'unicité du nom du portefeuille.
     /// </summary>
     /// <param name="name">Nom du portefeuille à créer</param>
-    public void AddPortfolio(string name);
+    public PortfolioItem AddPortfolio(string name);
     
     /// <summary>
     /// Supprime définitivement un portefeuille du repository. Supprime les fonds qui ne sont présents que dans ce portefeuille

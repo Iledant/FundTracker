@@ -26,9 +26,11 @@ public class RepositoryService : IRepositoryService
 
     public ObservableCollection<FundItem> Funds() => _funds;
 
-    public void AddPortfolio(string name)
+    public PortfolioItem AddPortfolio(string name)
     {
-        _portfolios.Add(new PortfolioItem { Name = name, Lines = new() });
+        var newItem = new PortfolioItem { Name = name, Lines = new() };
+        _portfolios.Add(newItem);
+        return newItem;
     }
 
     public async void AddToPortfolio(PortfolioItem portfolio, string morningStarID, string name, double quantity, double averagePurchasePrice)

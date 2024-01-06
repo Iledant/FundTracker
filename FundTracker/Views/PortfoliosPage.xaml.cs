@@ -42,7 +42,7 @@ public sealed partial class PortfoliosPage : Page
         var item = deletedTab.Tag as PortfolioItem;
         if (item is not null)
         {
-            ViewModel.PortfoliosList.Remove(item);
+            ViewModel.RemovePortfolio(item);
         }
         sender.TabItems.Remove(deletedTab);
     }

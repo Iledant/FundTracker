@@ -10,17 +10,17 @@ namespace FundTracker.ViewModels;
 
 public partial class PortfoliosViewModel : ObservableRecipient
 {
-    private readonly IPortfoliosListService _portfoliosListService;
+    private readonly IRepositoryService _repositoryService;
 
-    public ObservableCollection<PortfolioItem> PortfoliosList => _portfoliosListService.PortfoliosList();
+    public ObservableCollection<PortfolioItem> PortfoliosList => _repositoryService.Portfolios();
 
     private ObservableCollection<PortfolioLine> _portfolioContent = new();
 
     public ObservableCollection<PortfolioLine> PortfolioContent => _portfolioContent;
 
-    public PortfoliosViewModel(IPortfoliosListService portfoliosListService)
+    public PortfoliosViewModel(IRepositoryService repositoryService)
     {
-        _portfoliosListService = portfoliosListService;
+        _repositoryService = repositoryService;
     }
 
     public void GetPortfolioContent(PortfolioItem portfolioItem)
@@ -33,5 +33,10 @@ public partial class PortfoliosViewModel : ObservableRecipient
         PortfolioContent.Clear();
     }
 
-    public PortfolioItem AddPortfolio(string name) => _portfoliosListService.Add(name);
+    public PortfolioItem AddPortfolio(string name) => _repositoryService.AddPortfolio(name);
+
+    public void RemovePortfolio(PortfolioItem item)
+    {
+        _repositoryService.RemovePortfolio(item);
+    }
 }
