@@ -8,7 +8,7 @@ public sealed partial class AddPortfolioContentDialog : ContentDialog
 
     public AddPortfolioContentDialog()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void NameTextBox_TextChanged(object sender, TextChangedEventArgs e)
