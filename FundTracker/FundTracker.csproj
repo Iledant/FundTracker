@@ -17,6 +17,7 @@
     <WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="ContentDialogs\AddFundContentDialog.xaml" />
     <None Remove="ContentDialogs\AddPortfolioContentDialog.xaml" />
     <None Remove="Views\FundAddDialog.xaml" />
     <None Remove="Views\FundsView.xaml" />
@@ -44,6 +45,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="ContentDialogs\AddFundContentDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\FundAddDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

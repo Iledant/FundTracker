@@ -69,8 +69,8 @@ public sealed partial class PortfoliosPage : Page
         };
 
         Frame frame = new();
-        frame.Navigate(typeof(FundsView),item);
         newItem.Content = frame;
+        frame.Navigate(typeof(FundsView),item);
 
         return newItem;
     }

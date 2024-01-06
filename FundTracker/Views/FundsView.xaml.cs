@@ -1,3 +1,4 @@
+using FundTracker.ContentDialogs;
 using FundTracker.Core.Contracts.Services;
 using FundTracker.Core.Models;
 using FundTracker.ViewModels;
@@ -27,28 +28,17 @@ public sealed partial class FundsView : Page
 
     private async void AddFundButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        FundAddDialog content = new();
-        ContentDialog dialog = new()
+        var addContentDialog = new AddFundContentDialog
         {
-            XamlRoot = this.XamlRoot,
-            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
-            Title = "Ajouter un fond",
-            PrimaryButtonText = "Ajouter",
-            CloseButtonText = "Annuler",
-            DefaultButton = ContentDialogButton.Close,
-            Content = content,
-            IsPrimaryButtonEnabled = false
+            XamlRoot = Content.XamlRoot
         };
 
-        content.OnChanged = (bool b) => dialog.IsPrimaryButtonEnabled = b;
-        var result = await dialog.ShowAsync();
+        var result = await addContentDialog.ShowAsync(ContentDialogPlacement.Popup);
 
-        if (result == ContentDialogResult.Primary && content.SelectedFund is not null)
+        if (result == ContentDialogResult.Primary && addContentDialog.SelectedFund is not null)
         {
-            var fund = content.SelectedFund;
-
             ToggleProgressVisibility(true);
-            ViewModel.AddFund(fund, content.Quantity, content.AveragePurchasePrice);
+            ViewModel.AddFund(addContentDialog.SelectedFund, addContentDialog.Quantity, addContentDialog.AveragePurchasePrice);
             ToggleProgressVisibility(false);
         }
     }
