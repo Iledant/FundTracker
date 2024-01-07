@@ -15,44 +15,18 @@
         <helpers:DoubleToPercentageConverter x:Key="PercentageConverter" />
     </Page.Resources>
 
+    <Page.DataContext>
+        <viewmodels:FundsViewModel />
+    </Page.DataContext>
 
-    <Grid>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock
-            Margin="12,12,0,12"
-            Style="{StaticResource BaseTextBlockStyle}"
-            Text="Lignes" />
-        <controls:DataGrid
-            x:Name="DataGrid"
-            Grid.Row="1"
-            AutoGenerateColumns="False"
-            ItemsSource="{x:Bind ViewModel.Lines}"
-            SelectionChanged="DataGrid_SelectionChanged"
-            SelectionMode="Single">
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn
-                    Binding="{Binding Fund.Name}"
-                    Header="Nom"
-                    IsReadOnly="True" />
-                <controls:DataGridTextColumn
-                    Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}"
-                    Header="Evol"
-                    IsReadOnly="True">
-                    <controls:DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right" />
-                        </Style>
-                    </controls:DataGridTextColumn.ElementStyle>
-                </controls:DataGridTextColumn>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
         <StackPanel
             x:Name="AppBarStackPanel"
-            Grid.Row="2"
+            Grid.Row="0"
             Orientation="Horizontal">
             <AppBarButton
                 Click="AddFundButton_Click"
@@ -64,6 +38,39 @@
                 IsEnabled="{x:Bind ViewModel.IsFundSelected, Mode=OneWay}"
                 Label="Supprimer" />
         </StackPanel>
+        <Grid
+            x:Name="FundGrid"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <controls:DataGrid
+                x:Name="DataGrid"
+                AutoGenerateColumns="False"
+                ItemsSource="{x:Bind ViewModel.Lines}"
+                SelectionChanged="DataGrid_SelectionChanged"
+                SelectionMode="Single">
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn
+                        Binding="{Binding Fund.Name}"
+                        Header="Nom"
+                        IsReadOnly="True" />
+                    <controls:DataGridTextColumn
+                        Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}"
+                        Header="Evol"
+                        IsReadOnly="True">
+                        <controls:DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Right" />
+                            </Style>
+                        </controls:DataGridTextColumn.ElementStyle>
+                    </controls:DataGridTextColumn>
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
+        </Grid>
         <StackPanel
             x:Name="ProgressStackPanel"
             Grid.Row="1"

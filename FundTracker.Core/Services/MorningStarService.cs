@@ -81,7 +81,7 @@ public class MorningStarService : IMorningStarService
     public async Task<List<DateValue>> FetchHistorical(string MorningStarID, DateTime? beginDate = null, DateTime? endDate = null)
     {
         var endPattern = (endDate ?? DateTime.Now).ToString("yyyy-MM-dd");
-        var beginPattern = (beginDate ?? new DateTime(1991, 11, 29)).ToString("yyyy-MM-dd");
+        var beginPattern = (beginDate ?? new DateTime(2010, 1, 1)).ToString("yyyy-MM-dd");
         var url = $"https://tools.morningstar.fr/api/rest.svc/timeseries_price/ok91jeenoo?" +
             $"id={MorningStarID}%5D22%5D1%5D&currencyId=EUR&idtype=Morningstar&frequency=daily&" +
             $"startDate={beginPattern}&endDate={endPattern}&outputType=COMPACTJSON";

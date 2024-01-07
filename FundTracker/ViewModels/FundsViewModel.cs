@@ -4,16 +4,24 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using FundTracker.Contracts.ViewModels;
 using FundTracker.Core.Contracts.Services;
 using FundTracker.Core.Models;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace FundTracker.ViewModels;
 public partial class FundsViewModel : ObservableRecipient, INavigationAware
 {
     private PortfolioItem? _portfolioItem;
+
     public ObservableCollection<PortfolioLine> Lines = new();
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsFundSelected))]
     private PortfolioLine? _selected = null;
+
+    public readonly List<DateTimePoint> ChartValues = new();
+
     public bool IsFundSelected => Selected is not null;
 
     public void OnNavigatedTo(object parameter)
@@ -41,9 +49,19 @@ public partial class FundsViewModel : ObservableRecipient, INavigationAware
         repositoryService.RemoveLineFromPortfolio(_portfolioItem, line);
     }
 
-    public void FundSelected(PortfolioLine selected)
+    partial void OnSelectedChanged(PortfolioLine? oldValue, PortfolioLine? newValue)
     {
-        Selected = selected;
+        ChartValues.Clear();
+
+        if (newValue == null)
+        {
+            return;
+        }
+
+        foreach (var val in newValue.Fund.DateValues)
+        {
+            ChartValues.Add(new DateTimePoint(val.Date, val.Value));
+        }
     }
 
     public void OnNavigatedFrom() => throw new NotImplementedException();

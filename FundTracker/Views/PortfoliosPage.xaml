@@ -11,8 +11,9 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:PortfoliosViewModel}"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
+    <Grid x:Name="ContentArea" VerticalAlignment="Stretch">
         <TabView
+            VerticalAlignment="Stretch"
             AddTabButtonClick="TabView_AddTabButtonClick"
             Loaded="TabView_Loaded"
             TabCloseRequested="TabView_TabCloseRequested" />
