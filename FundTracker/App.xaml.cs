@@ -37,6 +37,7 @@ public partial class App : Application
     public static WindowEx MainWindow { get; } = new MainWindow();
 
     public static UIElement? AppTitlebar { get; set; }
+       
 
     public App()
     {
@@ -83,15 +84,51 @@ public partial class App : Application
         }).
         Build();
 
+        LoadRepository();
         App.GetService<IAppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
+    }
+
+    private static string GetApplicationStoragePath()
+    {
+        var localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var applicationDataFolder = Path.Combine(localApplicationData, "FundTracker/ApplicationData");
+        return Path.Combine(applicationDataFolder, "FundTracker.ftf");
+    }
+
+    public async void LoadRepository()
+    {
+        var repositoryService = App.GetService<IRepositoryService>();
+        var applicationStoragePath = GetApplicationStoragePath();
+
+        if (!File.Exists(applicationStoragePath))
+        {
+            return;
+        }
+
+        var storageStream = new FileStream(GetApplicationStoragePath(), FileMode.Open, FileAccess.Read);
+
+        await Task.Run(() => repositoryService.Load(storageStream));
+
+        storageStream.Close();
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
         var logger = Host.Services.GetService<ILogger>();
         logger?.LogError($"Exception d'application non gérée : {e.Exception},{e.Message}");
+    }
+
+    public static async void SaveRepository()
+    {
+        var repositoryService = App.GetService<IRepositoryService>();
+        var applicationStoragePath = GetApplicationStoragePath();
+        var storageStream = new FileStream(applicationStoragePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+        await Task.Run(() =>repositoryService.Save(storageStream));
+
+        storageStream.Close();
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

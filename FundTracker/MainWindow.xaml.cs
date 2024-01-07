@@ -34,4 +34,9 @@ public sealed partial class MainWindow : WindowEx
             TitleBarHelper.ApplySystemThemeToCaptionButtons();
         });
     }
+
+    private void WindowEx_Closed(object sender, Microsoft.UI.Xaml.WindowEventArgs args)
+    {
+        App.SaveRepository();
+    }
 }

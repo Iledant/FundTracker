@@ -83,6 +83,11 @@ public class RepositoryService : IRepositoryService
     public async void Load(Stream stream)
     {
         _logger?.LogInformation("Lecture et désérialisation");
+        if (stream.Length == 0)
+        {
+            _logger?.LogInformation("Fichier vide");
+            return;
+        }
         var jsonContainer = await JsonSerializer.DeserializeAsync<JSONContainer>(stream);
 
         if (jsonContainer == null)
