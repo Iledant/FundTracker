@@ -36,9 +36,27 @@ public sealed partial class PortfoliosPage : Page
         }
     }
 
-    private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+    private async void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
     {
         var deletedTab = args.Tab;
+
+        var dialog = new ContentDialog
+        {
+            XamlRoot = Content.XamlRoot,
+            Content = "Supprimer définitivement le portefeuille ?",
+            Title = "Confirmation de suppression",
+            PrimaryButtonText = "Supprimer",
+            SecondaryButtonText = "Annuler",
+            DefaultButton = ContentDialogButton.Secondary
+        };
+
+        var result = await dialog.ShowAsync(ContentDialogPlacement.Popup);
+
+        if (result == ContentDialogResult.Secondary)
+        {
+            return;
+        }
+
         var item = deletedTab.Tag as PortfolioItem;
         if (item is not null)
         {
