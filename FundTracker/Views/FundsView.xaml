@@ -19,36 +19,39 @@
         <viewmodels:FundsViewModel />
     </Page.DataContext>
 
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel
-            x:Name="AppBarStackPanel"
-            Grid.Row="0"
-            Orientation="Horizontal">
-            <AppBarButton
-                Click="AddFundButton_Click"
-                Icon="Add"
-                Label="Ajouter" />
-            <AppBarButton
-                Click="DeleteFundButton_Click"
-                Icon="Delete"
-                IsEnabled="{x:Bind ViewModel.IsFundSelected, Mode=OneWay}"
-                Label="Supprimer" />
-        </StackPanel>
-        <Grid
-            x:Name="FundGrid"
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <Grid
+        x:Name="MainGrid"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="LeftGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel
+                x:Name="AppBarStackPanel"
+                Grid.Row="0"
+                Orientation="Horizontal">
+                <AppBarButton
+                    Click="AddFundButton_Click"
+                    Icon="Add"
+                    Label="Ajouter" />
+                <AppBarButton
+                    Click="DeleteFundButton_Click"
+                    Icon="Delete"
+                    IsEnabled="{x:Bind ViewModel.IsFundSelected, Mode=OneWay}"
+                    Label="Supprimer" />
+            </StackPanel>
+
             <controls:DataGrid
                 x:Name="DataGrid"
+                Grid.Row="1"
                 AutoGenerateColumns="False"
                 ItemsSource="{x:Bind ViewModel.Lines}"
                 SelectionChanged="DataGrid_SelectionChanged"
@@ -70,17 +73,18 @@
                     </controls:DataGridTextColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
+
+            <StackPanel
+                x:Name="ProgressStackPanel"
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical"
+                Visibility="Collapsed">
+                <TextBlock Text="Récupération de l'historique" />
+                <ProgressRing IsIndeterminate="True" />
+            </StackPanel>
         </Grid>
-        <StackPanel
-            x:Name="ProgressStackPanel"
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Vertical"
-            Visibility="Collapsed">
-            <TextBlock Text="Récupération de l'historique" />
-            <ProgressRing IsIndeterminate="True" />
-        </StackPanel>
     </Grid>
 
 </Page>

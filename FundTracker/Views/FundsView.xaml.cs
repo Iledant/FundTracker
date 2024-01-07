@@ -55,7 +55,7 @@ public sealed partial class FundsView : Page
     private void ToggleProgressVisibility(bool isProgressVisible)
     {
         ProgressStackPanel.Visibility = isProgressVisible ? Visibility.Visible : Visibility.Collapsed;
-        FundGrid.Visibility = isProgressVisible ? Visibility.Collapsed : Visibility.Visible;
+        DataGrid.Visibility = isProgressVisible ? Visibility.Collapsed : Visibility.Visible;
         AppBarStackPanel.Visibility = isProgressVisible ? Visibility.Collapsed : Visibility.Visible;
     }
 
@@ -74,7 +74,7 @@ public sealed partial class FundsView : Page
                     LineSmoothness = 0
                 }
             },
-            ZoomMode = LiveChartsCore.Measure.ZoomAndPanMode.ZoomX | LiveChartsCore.Measure.ZoomAndPanMode.PanX,
+            ZoomMode = LiveChartsCore.Measure.ZoomAndPanMode.X,
             MinHeight = 300,
             MinWidth = 500
         };
@@ -85,12 +85,12 @@ public sealed partial class FundsView : Page
         ViewModel.Selected = (Core.Models.PortfolioLine?)DataGrid.SelectedItem;
         if (_chart is not null)
         {
-            FundGrid.Children.Remove(_chart);
+            MainGrid.Children.Remove(_chart);
         }
         _chart = CreateCartesianChart();
         _chart.VerticalAlignment = VerticalAlignment.Stretch;
         _chart.HorizontalAlignment= HorizontalAlignment.Stretch;
-        FundGrid.Children.Add(_chart);
+        MainGrid.Children.Add(_chart);
         Grid.SetColumn(_chart, 1);
     }
 }
