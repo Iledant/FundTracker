@@ -82,7 +82,7 @@ public class TestRepository
         var firstLine = repositoryService.Portfolios().First().Lines.First();
         Assert.AreEqual(FundTestQuantity1, firstLine.Quantity);
         Assert.AreEqual(FundTestAPP1, firstLine.AveragePurchasePrice);
-        var evol = (ValueTest1 - firstLine.AveragePurchasePrice)/firstLine.AveragePurchasePrice - 1;
+        var evol = (ValueTest1 - firstLine.AveragePurchasePrice)/firstLine.AveragePurchasePrice;
         Assert.AreEqual(evol, firstLine.Evol);
     }
 

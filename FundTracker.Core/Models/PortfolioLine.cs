@@ -32,6 +32,6 @@ public class PortfolioLine
             return;
         }
 
-        Evol = (lastDateValue.Value - AveragePurchasePrice) / AveragePurchasePrice - 1;
+        Evol = (lastDateValue.Value - AveragePurchasePrice) / AveragePurchasePrice;
     }
 }
