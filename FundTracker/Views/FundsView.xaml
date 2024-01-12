@@ -13,6 +13,7 @@
 
     <Page.Resources>
         <helpers:DoubleToPercentageConverter x:Key="PercentageConverter" />
+        <helpers:DoubleConverter x:Key="DoubleConverter" />
     </Page.Resources>
 
     <Page.DataContext>
@@ -22,17 +23,10 @@
     <Grid
         x:Name="MainGrid"
         HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        VerticalAlignment="Stretch"
+        ColumnDefinitions="Auto,1*">
 
-        <Grid x:Name="LeftGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <Grid x:Name="LeftGrid" RowDefinitions="Auto,Auto">
 
             <StackPanel
                 x:Name="AppBarStackPanel"
@@ -61,6 +55,16 @@
                         Binding="{Binding Fund.Name}"
                         Header="Nom"
                         IsReadOnly="True" />
+                    <controls:DataGridTextColumn
+                        Binding="{Binding Quantity, Converter={StaticResource DoubleConverter}}"
+                        Header="Qté"
+                        IsReadOnly="True">
+                        <controls:DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Right" />
+                            </Style>
+                        </controls:DataGridTextColumn.ElementStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn
                         Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}"
                         Header="Evol"

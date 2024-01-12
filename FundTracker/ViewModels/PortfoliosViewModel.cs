@@ -12,9 +12,9 @@ public partial class PortfoliosViewModel : ObservableRecipient
 {
     private readonly IRepositoryService _repositoryService;
 
-    public ObservableCollection<PortfolioItem> PortfoliosList => _repositoryService.Portfolios();
-
     private ObservableCollection<PortfolioLine> _portfolioContent = new();
+
+    public ObservableCollection<PortfolioItem> PortfoliosList => _repositoryService.Portfolios();
 
     public ObservableCollection<PortfolioLine> PortfolioContent => _portfolioContent;
 
