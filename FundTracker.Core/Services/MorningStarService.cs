@@ -10,6 +10,7 @@ public class MorningStarService : IMorningStarService
     private static readonly CultureInfo usCulture = new("en-US");
     private static readonly string[] filteredCategories = { "PEA", "Fonds", "Actions", "ETFs" };
     private static readonly string searchUrl = "https://www.morningstar.fr/fr/util/SecuritySearch.ashx?source=nav&moduleId=6&ifIncludeAds=False&usrtType=v";
+    private static readonly DateTime historicalBeginDate = new(2010, 1, 1);
     private readonly ILogger<MorningStarService> _logger;
 
     public MorningStarService(ILogger<MorningStarService> logger)
@@ -81,7 +82,7 @@ public class MorningStarService : IMorningStarService
     public async Task<List<DateValue>> FetchHistorical(string MorningStarID, DateTime? beginDate = null, DateTime? endDate = null)
     {
         var endPattern = (endDate ?? DateTime.Now).ToString("yyyy-MM-dd");
-        var beginPattern = (beginDate ?? new DateTime(2010, 1, 1)).ToString("yyyy-MM-dd");
+        var beginPattern = (beginDate ?? historicalBeginDate).ToString("yyyy-MM-dd");
         var url = $"https://tools.morningstar.fr/api/rest.svc/timeseries_price/ok91jeenoo?" +
             $"id={MorningStarID}%5D22%5D1%5D&currencyId=EUR&idtype=Morningstar&frequency=daily&" +
             $"startDate={beginPattern}&endDate={endPattern}&outputType=COMPACTJSON";
@@ -124,4 +125,6 @@ public class MorningStarService : IMorningStarService
         values.Sort((v1,v2) => DateTime.Compare(v1.Date,v2.Date));
         return values;
     }
+
+    public DateTime HistoricalBeginDate() => historicalBeginDate;
 }

@@ -18,4 +18,10 @@ public interface IMorningStarService
     /// <param name="namePattern">partie du nom du fond ou de l'action recherchée</param>
     /// <returns>Liste de fonds correspondant à la recherche avec une structure comportant l'ID, le nom complet, le type (action, fond...), la bourse et l'abbréviation</returns>
     public Task<List<MorningStarFund>> FetchFunds(string namePattern);
+
+    /// <summary>
+    /// Get the date of historical begin
+    /// </summary>
+    /// <returns>The default date used to fetch historical values</returns>
+    public DateTime HistoricalBeginDate();
 }

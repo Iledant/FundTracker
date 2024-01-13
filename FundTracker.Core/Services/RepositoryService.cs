@@ -91,6 +91,19 @@ public class RepositoryService : IRepositoryService
         _logger?.LogInformation("Sauvegarde terminée");
     }
 
+    private async void UpdateFunds(JSONContainer container)
+    {
+        foreach (var fund in container.Funds) {
+            var lastDate = _morningStarService.HistoricalBeginDate();
+            if (fund.DateValues.Count > 0)
+            {
+                lastDate = fund.DateValues.Last().Date.AddDays(1);
+            }
+            var newValues = await _morningStarService.FetchHistorical(fund.MSId, lastDate);
+            fund.DateValues.AddRange(newValues);
+        }
+    }
+
     public async void Load(Stream stream)
     {
         _logger?.LogInformation("Lecture et désérialisation");
@@ -107,6 +120,7 @@ public class RepositoryService : IRepositoryService
         }
 
         _portfolios = jsonContainer.GetPortfolioItems();
+        await Task.Run( () => UpdateFunds(jsonContainer));
         _funds = new ObservableCollection<FundItem>(jsonContainer.Funds);
         _logger?.LogInformation("Lecture terminée");
     }
