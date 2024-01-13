@@ -124,8 +124,8 @@ public partial class App : Application
     {
         var repositoryService = App.GetService<IRepositoryService>();
         var applicationStoragePath = GetApplicationStoragePath();
-        var storageStream = new FileStream(applicationStoragePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
+        var storageStream = new FileStream(applicationStoragePath, FileMode.OpenOrCreate | FileMode.Truncate, FileAccess.Write);
+   
         await Task.Run(() =>repositoryService.Save(storageStream));
 
         storageStream.Close();
