@@ -11,11 +11,41 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:PortfoliosViewModel}"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <XamlUICommand
+            x:Name="AddTabCommand"
+            ExecuteRequested="AddTabCommand_ExecuteRequested"
+            Label="Ajouter">
+            <XamlUICommand.IconSource>
+                <SymbolIconSource Symbol="Add" />
+            </XamlUICommand.IconSource>
+            <XamlUICommand.KeyboardAccelerators>
+                <KeyboardAccelerator Key="T" Modifiers="Control" />
+            </XamlUICommand.KeyboardAccelerators>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="RenameTaddCommand"
+            ExecuteRequested="RenameTaddCommand_ExecuteRequested"
+            Label="Renommer">
+            <XamlUICommand.IconSource>
+                <SymbolIconSource Symbol="Edit" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+    </Page.Resources>
+
     <Grid x:Name="ContentArea" VerticalAlignment="Stretch">
         <TabView
+            x:Name="PortfolioTabView"
             VerticalAlignment="Stretch"
-            AddTabButtonClick="TabView_AddTabButtonClick"
+            AddTabButtonCommand="{StaticResource AddTabCommand}"
             Loaded="TabView_Loaded"
-            TabCloseRequested="TabView_TabCloseRequested" />
+            TabCloseRequested="TabView_TabCloseRequested">
+            <TabView.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Command="{StaticResource AddTabCommand}" />
+                    <MenuFlyoutItem Command="{StaticResource RenameTaddCommand}" />
+                </MenuFlyout>
+            </TabView.ContextFlyout>
+        </TabView>
     </Grid>
 </Page>

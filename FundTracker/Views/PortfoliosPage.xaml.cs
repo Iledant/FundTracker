@@ -1,4 +1,5 @@
-﻿using FundTracker.ContentDialogs;
+﻿using System.Text;
+using FundTracker.ContentDialogs;
 using FundTracker.Core.Models;
 using FundTracker.ViewModels;
 
@@ -18,22 +19,6 @@ public sealed partial class PortfoliosPage : Page
     {
         ViewModel = App.GetService<PortfoliosViewModel>();
         InitializeComponent();
-    }
-
-    private async void TabView_AddTabButtonClick(TabView sender, object args)
-    {
-        var addContentDialog = new AddPortfolioContentDialog
-        {
-            XamlRoot = Content.XamlRoot
-        };
-
-        var result = await addContentDialog.ShowAsync(ContentDialogPlacement.Popup);
-
-        if (result == ContentDialogResult.Primary)
-        {
-            var newItem = ViewModel.AddPortfolio(addContentDialog.PortfolioName);
-            sender.TabItems.Add(CreateNewTab(newItem));
-        }
     }
 
     private async void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
@@ -67,10 +52,10 @@ public sealed partial class PortfoliosPage : Page
 
     private void TabView_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        foreach (var  item in ViewModel.PortfoliosList)
+        foreach (var item in ViewModel.PortfoliosList)
         {
             (sender as TabView)?.TabItems.Add(CreateNewTab(item));
-        }   
+        }
     }
 
     private TabViewItem CreateNewTab(PortfolioItem item)
@@ -88,8 +73,50 @@ public sealed partial class PortfoliosPage : Page
 
         Frame frame = new();
         newItem.Content = frame;
-        frame.Navigate(typeof(FundsView),item);
+        frame.Navigate(typeof(FundsView), item);
 
         return newItem;
+    }
+
+    private async Task<string?> PortfolioNameDialog(string initialName)
+    {
+        var addContentDialog = new PortfolioNameDialog(initialName)
+        {
+            XamlRoot = Content.XamlRoot
+        };
+
+        var result = await addContentDialog.ShowAsync(ContentDialogPlacement.Popup);
+
+        if (result == ContentDialogResult.Primary)
+        {
+            return addContentDialog.PortfolioName;
+        }
+        return null;
+    }
+
+    private async void AddTabCommand_ExecuteRequested(Microsoft.UI.Xaml.Input.XamlUICommand sender, Microsoft.UI.Xaml.Input.ExecuteRequestedEventArgs args)
+    {
+        var portfolioName = await PortfolioNameDialog("");
+        
+        if (portfolioName is not null)
+        {
+            var newItem = ViewModel.AddPortfolio(portfolioName);
+            PortfolioTabView.TabItems.Add(CreateNewTab(newItem));
+        }
+    }
+
+    private async void RenameTaddCommand_ExecuteRequested(Microsoft.UI.Xaml.Input.XamlUICommand sender, Microsoft.UI.Xaml.Input.ExecuteRequestedEventArgs args)
+    {
+        if ((PortfolioTabView.SelectedItem as TabViewItem)?.Tag is not PortfolioItem selectedPortfolio)
+        {
+            return;
+        }
+        var portfolioName = await PortfolioNameDialog(selectedPortfolio.Name);
+
+        if (portfolioName is not null)
+        {
+            ViewModel.RenamePortfolio(selectedPortfolio, portfolioName);
+            (PortfolioTabView.SelectedItem as TabViewItem).Header = portfolioName;
+        }
     }
 }

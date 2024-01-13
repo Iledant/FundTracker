@@ -49,6 +49,17 @@ public class RepositoryService : IRepositoryService
         portfolio.Lines.Add(line);
     }
 
+    public void RenamePortfolio(PortfolioItem portfolio, string newName)
+    {
+        if (portfolio is null)
+        {
+            return;
+        }
+
+        portfolio.Name = newName;
+    }
+
+
     public void RemoveLineFromPortfolio(PortfolioItem item, PortfolioLine line)
     {
         item.Lines.Remove(line);
@@ -106,4 +117,5 @@ public class RepositoryService : IRepositoryService
 
         return _portfolios.Any<PortfolioItem>(portfolio => containsSearchedFund(portfolio));
     }
+
 }

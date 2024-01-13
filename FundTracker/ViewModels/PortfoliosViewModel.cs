@@ -39,4 +39,6 @@ public partial class PortfoliosViewModel : ObservableRecipient
     {
         _repositoryService.RemovePortfolio(item);
     }
+
+    public void RenamePortfolio(PortfolioItem item, string newName) => _repositoryService.RenamePortfolio(item, newName);
 }

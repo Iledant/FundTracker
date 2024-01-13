@@ -18,7 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="ContentDialogs\AddFundContentDialog.xaml" />
-    <None Remove="ContentDialogs\AddPortfolioContentDialog.xaml" />
+    <None Remove="ContentDialogs\PortfolioNameDialog.xaml" />
     <None Remove="Views\FundsView.xaml" />
   </ItemGroup>
 
@@ -50,7 +50,7 @@
     <Page Update="Views\FundsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="ContentDialogs\AddPortfolioContentDialog.xaml">
+    <Page Update="ContentDialogs\PortfolioNameDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

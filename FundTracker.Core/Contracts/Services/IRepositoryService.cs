@@ -26,6 +26,13 @@ public interface IRepositoryService
     /// </summary>
     /// <param name="name">Nom du portefeuille à créer</param>
     public PortfolioItem AddPortfolio(string name);
+
+    /// <summary>
+    /// Renomme un portefeuille sans vérifier l'unicité du nouveau nom
+    /// </summary>
+    /// <param name="portfolio">Portefeuille à modifier</param>
+    /// <param name="newName">Nouveau nom</param>
+    public void RenamePortfolio(PortfolioItem portfolio, string newName);
     
     /// <summary>
     /// Supprime définitivement un portefeuille du repository. Supprime les fonds qui ne sont présents que dans ce portefeuille
