@@ -63,7 +63,24 @@ public sealed partial class FundsView : Page
     {
         return new CartesianChart
         {
-            XAxes = new Axis[] { new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd/MM/yy")) },
+            XAxes = new Axis[] {
+                new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd/MM/yy"))
+                {
+                    CrosshairLabelsBackground = SKColors.DarkOrange.AsLvcColor(),
+                    CrosshairLabelsPaint = new SolidColorPaint(SKColors.DarkRed, 1),
+                    CrosshairPaint = new SolidColorPaint(SKColors.DarkOrange, 1),
+                    Labeler = value => new DateTime((long)value).ToString("dd/MM/yy")
+                }
+            },
+            YAxes = new Axis[]
+            {
+                new() {
+                    CrosshairLabelsBackground = SKColors.DarkOrange.AsLvcColor(),
+                    CrosshairLabelsPaint = new SolidColorPaint(SKColors.DarkRed, 1),
+                    CrosshairPaint = new SolidColorPaint(SKColors.DarkOrange, 1),
+                    Labeler = value => value.ToString("F2")
+                }
+            },
             Series = new ISeries[] {
                 new LineSeries<DateTimePoint> {
                     Values = ViewModel.ChartValues,
@@ -89,7 +106,7 @@ public sealed partial class FundsView : Page
         }
         _chart = CreateCartesianChart();
         _chart.VerticalAlignment = VerticalAlignment.Stretch;
-        _chart.HorizontalAlignment= HorizontalAlignment.Stretch;
+        _chart.HorizontalAlignment = HorizontalAlignment.Stretch;
         MainGrid.Children.Add(_chart);
         Grid.SetColumn(_chart, 1);
     }
