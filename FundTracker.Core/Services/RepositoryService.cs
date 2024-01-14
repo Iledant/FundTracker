@@ -112,7 +112,7 @@ public class RepositoryService : IRepositoryService
             _logger?.LogInformation("Fichier vide");
             return;
         }
-        var jsonContainer = await JsonSerializer.DeserializeAsync<JSONContainer>(stream);
+        var jsonContainer = JsonSerializer.Deserialize<JSONContainer>(stream);
 
         if (jsonContainer == null)
         {
