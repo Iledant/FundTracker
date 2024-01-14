@@ -113,16 +113,22 @@ public sealed partial class PortfoliosPage : Page
 
     private async void RenameTabCommand_ExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
     {
-        if ((PortfolioTabView.SelectedItem as TabViewItem)?.Tag is not PortfolioItem selectedPortfolio)
+        if (PortfolioTabView.SelectedItem is not TabViewItem selectedTab)
         {
             return;
         }
+
+        if (selectedTab.Tag is not PortfolioItem selectedPortfolio)
+        {
+            return;
+        }
+
         var portfolioName = await PortfolioNameDialog(selectedPortfolio.Name);
 
         if (portfolioName is not null)
         {
             ViewModel.RenamePortfolio(selectedPortfolio, portfolioName);
-            (PortfolioTabView.SelectedItem as TabViewItem).Header = portfolioName;
+            selectedTab.Header = portfolioName;
         }
     }
 

@@ -114,14 +114,19 @@ public sealed partial class FundsView : Page
 
     private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
+        if (e.Column.Header.ToString() is not string sortingColumnName)
+        {
+            return;
+        }
+        
         var sortDirection = e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending ?
             DataGridSortDirection.Ascending : DataGridSortDirection.Descending;
         
-        ViewModel.SortLines(e.Column.Header.ToString(), sortDirection);
+        ViewModel.SortLines(sortingColumnName, sortDirection);
         
         foreach (var col in DataGrid.Columns)
         {
-            col.SortDirection =  col.Header.ToString() != e.Column.Header.ToString() ? null : sortDirection;
+            col.SortDirection =  col.Header.ToString() != sortingColumnName ? null : sortDirection;
         }
     }
 }
