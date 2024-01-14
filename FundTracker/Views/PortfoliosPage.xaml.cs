@@ -5,6 +5,7 @@ using FundTracker.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Input;
 
 namespace FundTracker.Views;
 
@@ -21,10 +22,8 @@ public sealed partial class PortfoliosPage : Page
         InitializeComponent();
     }
 
-    private async void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+    private async Task<ContentDialogResult> ShowDeleteTabDialog()
     {
-        var deletedTab = args.Tab;
-
         var dialog = new ContentDialog
         {
             XamlRoot = Content.XamlRoot,
@@ -35,7 +34,14 @@ public sealed partial class PortfoliosPage : Page
             DefaultButton = ContentDialogButton.Secondary
         };
 
-        var result = await dialog.ShowAsync(ContentDialogPlacement.Popup);
+        return await dialog.ShowAsync(ContentDialogPlacement.Popup); ;
+    }
+
+    private async void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
+    {
+        var deletedTab = args.Tab;
+
+        var result = await ShowDeleteTabDialog();     
 
         if (result == ContentDialogResult.Secondary)
         {
@@ -94,7 +100,7 @@ public sealed partial class PortfoliosPage : Page
         return null;
     }
 
-    private async void AddTabCommand_ExecuteRequested(Microsoft.UI.Xaml.Input.XamlUICommand sender, Microsoft.UI.Xaml.Input.ExecuteRequestedEventArgs args)
+    private async void AddTabCommand_ExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
     {
         var portfolioName = await PortfolioNameDialog("");
         
@@ -105,7 +111,7 @@ public sealed partial class PortfoliosPage : Page
         }
     }
 
-    private async void RenameTaddCommand_ExecuteRequested(Microsoft.UI.Xaml.Input.XamlUICommand sender, Microsoft.UI.Xaml.Input.ExecuteRequestedEventArgs args)
+    private async void RenameTabCommand_ExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
     {
         if ((PortfolioTabView.SelectedItem as TabViewItem)?.Tag is not PortfolioItem selectedPortfolio)
         {
@@ -118,5 +124,23 @@ public sealed partial class PortfoliosPage : Page
             ViewModel.RenamePortfolio(selectedPortfolio, portfolioName);
             (PortfolioTabView.SelectedItem as TabViewItem).Header = portfolioName;
         }
+    }
+
+    private async void DeleteTabCommand_ExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
+    {
+        var result = await ShowDeleteTabDialog();
+
+        if (result == ContentDialogResult.Secondary)
+        {
+            return;
+        }
+
+        if (PortfolioTabView.SelectedItem is TabViewItem { Tag: PortfolioItem selectedPorfolio })
+        {
+           ViewModel.RemovePortfolio(selectedPorfolio);
+        }
+
+        PortfolioTabView.TabItems.Remove(PortfolioTabView.SelectedItem);
+
     }
 }
