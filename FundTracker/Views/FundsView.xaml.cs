@@ -11,6 +11,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using SkiaSharp;
 using LiveChartsCore.SkiaSharpView.Painting;
+using CommunityToolkit.WinUI.UI.Controls;
 
 
 namespace FundTracker.Views;
@@ -109,5 +110,18 @@ public sealed partial class FundsView : Page
         _chart.HorizontalAlignment = HorizontalAlignment.Stretch;
         MainGrid.Children.Add(_chart);
         Grid.SetColumn(_chart, 1);
+    }
+
+    private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+    {
+        var sortDirection = e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending ?
+            DataGridSortDirection.Ascending : DataGridSortDirection.Descending;
+        
+        ViewModel.SortLines(e.Column.Header.ToString(), sortDirection);
+        
+        foreach (var col in DataGrid.Columns)
+        {
+            col.SortDirection =  col.Header.ToString() != e.Column.Header.ToString() ? null : sortDirection;
+        }
     }
 }

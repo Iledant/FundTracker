@@ -47,17 +47,19 @@
                 x:Name="DataGrid"
                 Grid.Row="1"
                 AutoGenerateColumns="False"
+                CanUserSortColumns="True"
                 ItemsSource="{x:Bind ViewModel.Lines}"
                 SelectionChanged="DataGrid_SelectionChanged"
-                SelectionMode="Single">
+                SelectionMode="Single"
+                Sorting="DataGrid_Sorting">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn
                         Binding="{Binding Fund.Name}"
-                        Header="Nom"
+                        Header="{x:Bind ViewModel.NameColumn}"
                         IsReadOnly="True" />
                     <controls:DataGridTextColumn
                         Binding="{Binding Quantity, Converter={StaticResource DoubleConverter}}"
-                        Header="Qté"
+                        Header="{x:Bind ViewModel.QuantityColumn}"
                         IsReadOnly="True">
                         <controls:DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
@@ -67,7 +69,7 @@
                     </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn
                         Binding="{Binding Evol, Converter={StaticResource PercentageConverter}}"
-                        Header="Evol"
+                        Header="{x:Bind ViewModel.EvolColumn}"
                         IsReadOnly="True">
                         <controls:DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">

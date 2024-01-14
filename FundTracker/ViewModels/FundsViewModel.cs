@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel.__Internals;
+using CommunityToolkit.WinUI.UI.Controls;
 using FundTracker.Contracts.ViewModels;
 using FundTracker.Core.Contracts.Services;
 using FundTracker.Core.Models;
@@ -8,13 +10,19 @@ using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.AI.MachineLearning;
 
 namespace FundTracker.ViewModels;
+
 public partial class FundsViewModel : ObservableRecipient, INavigationAware
 {
     private PortfolioItem? _portfolioItem;
 
     public ObservableCollection<PortfolioLine> Lines = new();
+
+    public string NameColumn => "Nom";
+    public string QuantityColumn => "Qté";
+    public string EvolColumn => "Evol";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsFundSelected))]
@@ -65,4 +73,48 @@ public partial class FundsViewModel : ObservableRecipient, INavigationAware
     }
 
     public void OnNavigatedFrom() => throw new NotImplementedException();
+
+    public void SortLines(string columnName, DataGridSortDirection direction)
+    {
+        if (columnName == null || _portfolioItem is null) {
+            return;
+        }
+
+        if (columnName == NameColumn)
+        {
+            if (direction == DataGridSortDirection.Ascending)
+            {
+                Lines = new ObservableCollection<PortfolioLine>(from item in _portfolioItem.Lines orderby item.Fund.Name ascending select item);
+            }
+            else
+            {
+                Lines = new ObservableCollection<PortfolioLine>(from item in _portfolioItem.Lines orderby item.Fund.Name descending select item);
+            }
+        }
+
+        if (columnName == QuantityColumn)
+        {
+            if (direction == DataGridSortDirection.Ascending)
+            {
+                Lines = new ObservableCollection<PortfolioLine>(from item in _portfolioItem.Lines orderby item.Quantity ascending select item);
+            }
+            else
+            {
+                Lines = new ObservableCollection<PortfolioLine>(from item in _portfolioItem.Lines orderby item.Quantity descending select item);
+            }
+        }
+
+        if (columnName == EvolColumn)
+        {
+            if (direction == DataGridSortDirection.Ascending)
+            {
+                Lines = new ObservableCollection<PortfolioLine>(from item in _portfolioItem.Lines orderby item.Evol ascending select item);
+            }
+            else
+            {
+                Lines = new ObservableCollection<PortfolioLine>(from item in _portfolioItem.Lines orderby item.Evol descending select item);
+            }
+        }
+
+    }
 }

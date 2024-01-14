@@ -8,7 +8,6 @@ using FundTracker.Notifications;
 using FundTracker.Services;
 using FundTracker.ViewModels;
 using FundTracker.Views;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
