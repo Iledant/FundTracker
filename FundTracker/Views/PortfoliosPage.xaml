@@ -38,6 +38,9 @@
             <XamlUICommand.IconSource>
                 <SymbolIconSource Symbol="Delete" />
             </XamlUICommand.IconSource>
+            <XamlUICommand.KeyboardAccelerators>
+                <KeyboardAccelerator Key="W" Modifiers="Control" />
+            </XamlUICommand.KeyboardAccelerators>
         </XamlUICommand>
     </Page.Resources>
 
