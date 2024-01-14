@@ -93,8 +93,11 @@ public sealed partial class FundsView : Page
                 }
             },
             ZoomMode = LiveChartsCore.Measure.ZoomAndPanMode.X,
-            MinHeight = 300,
-            MinWidth = 500
+            Margin = new Thickness { Left = 12, Top=0, Right=0, Bottom=0 },
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch,
+            //MinHeight = 300,
+            //MinWidth = 500
         };
     }
 

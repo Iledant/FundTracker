@@ -24,8 +24,11 @@
         x:Name="MainGrid"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
-        ColumnDefinitions="Auto,1*"
-        ColumnSpacing="12">
+        ColumnSpacing="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="100" />
+            <ColumnDefinition MinWidth="300" />
+        </Grid.ColumnDefinitions>
 
         <Grid x:Name="LeftGrid" RowDefinitions="Auto,Auto">
 
@@ -91,7 +94,18 @@
                 <TextBlock Text="Récupération de l'historique" />
                 <ProgressRing IsIndeterminate="True" />
             </StackPanel>
+
         </Grid>
+        <controls:GridSplitter
+            Grid.Column="1"
+            Width="10"
+            HorizontalAlignment="Left"
+            ResizeBehavior="BasedOnAlignment"
+            ResizeDirection="Auto">
+            <controls:GridSplitter.RenderTransform>
+                <TranslateTransform X="-10" />
+            </controls:GridSplitter.RenderTransform>
+        </controls:GridSplitter>
     </Grid>
 
 </Page>
